@@ -1,0 +1,64 @@
+
+    <!-- Navbar Start -->
+    <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top p-0">
+        <a href="index.html" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
+            <h2 class="m-0 text-primary">Mahalaxmi Implements</h2>
+        </a>
+        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav ms-auto p-4 p-lg-0">
+                <a href="{% url 'index' %}" class="nav-item nav-link active">Home</a>
+              <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Branch</a>
+                    <div class="dropdown-menu fade-up m-0">
+                        <a href="{% url 'branch' %}" class="dropdown-item">Add Branch</a>
+                        <a href="{% url 'branch_list' %}" class="dropdown-item">View Branch</a>
+
+                    </div>
+                </div>
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Item</a>
+                    <div class="dropdown-menu fade-up m-0">
+                        <a href="{% url 'add_item'  %}" class="dropdown-item">ADD  Item</a>
+                        <a href="{% url 'item_list'  %}" class="dropdown-item">Godown</a>
+
+                    </div>
+                </div>
+
+              <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Stock</a>
+                    <div class="dropdown-menu fade-up m-0">
+                        <a href="{% url 'stock_list'   %}" class="dropdown-item">Stock</a>
+                        <a href="{% url 'item_view'   %}" class="dropdown-item">Stock Transfer</a>
+                        <a href="{% url 'transfer_item_list'     %}" class="dropdown-item">Stock Transfer list</a>
+
+                    </div>
+                </div>
+                 <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Employee</a>
+                    <div class="dropdown-menu fade-up m-0">
+                        <a href="{% url 'employee'    %}" class="dropdown-item">Add employee</a>
+                        <a href="{% url 'emp_list'    %}" class="dropdown-item">Employee View</a>
+
+
+                    </div>
+                </div>
+
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Dealer</a>
+                    <div class="dropdown-menu fade-up m-0">
+                        <a href="{% url 'dealer_create'    %}" class="dropdown-item">Add dealer</a>
+                        <a href="{% url 'dealer_list'    %}" class="dropdown-item"> View</a>
+
+
+                    </div>
+                </div>
+
+                <a href="{% url 'index' %}" class="nav-item nav-link">Logout</a>
+            </div>
+        </div>
+    </nav>
+    <!-- Navbar End -->
+

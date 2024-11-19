@@ -1,0 +1,193 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Woody - Carpenter Website Template</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Favicon -->
+    <link href="{% static 'img/favicon.ico' %}" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500&family=Roboto:wght@500;700;900&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="{% static 'lib/animate/animate.min.css' %}" rel="stylesheet">
+    <link href="{% static 'lib/owlcarousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
+    <link href="{% static 'lib/lightbox/css/lightbox.min.css' %}" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: url('{% static "img/background1.jpg" %}') no-repeat center center fixed;
+            background-size: cover;
+            height: 100vh;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 2px solid #34495e;
+            padding: 12px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        th {
+            background-color: #2A3663;
+            color: #ffffff;
+        }
+
+        td {
+            background-color: #f4f4f4;
+            color: #34495e;
+        }
+
+        tr:hover {
+            background-color: #e8e8e8;
+        }
+
+        .btn-primary {
+            font-weight: bold;
+        }
+
+        .form-label {
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: #2A3663;
+            margin-bottom: 8px;
+            text-transform: none;
+        }
+
+        .form-control {
+            border-radius: 5px;
+            border: 2px solid #ccc;
+            padding: 10px;
+        }
+
+        .form-control:focus {
+            border-color: #2A3663;
+            box-shadow: 0 0 5px rgba(42, 54, 99, 0.5);
+        }
+    </style>
+
+</head>
+
+<body>
+    {% include 'admin_nav.html' %}
+
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Dealer Information Form</h2>
+        <form method="POST" enctype="multipart/form-data" action="{% url 'dealer_create' %}">
+            {% csrf_token %}
+            <div class="row g-3">
+                <div class="col-md-2">
+                    <label for="Firm_name" class="form-label">Firm name</label>
+                    <input type="text" class="form-control" id="Firm_name" name="Firm_name" required>
+                </div>
+                <div class="col-md-2">
+                    <label for="Owner_name" class="form-label">Owner name</label>
+                    <input type="text" class="form-control" id="Owner_name" name="Owner_name" required>
+                </div>
+                <div class="col-md-2">
+                    <label for="contact" class="form-label">Contact number</label>
+                    <input type="text" class="form-control" id="contact" name="contact" required>
+                </div>
+                <div class="col-md-2">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                </div>
+                <div class="col-md-2">
+                    <label for="village" class="form-label">City</label>
+                    <input type="text" class="form-control" id="village" name="village" required>
+                </div>
+            </div>
+
+            <div class="row g-3">
+                <div class="col-md-2">
+                    <label for="Taluk" class="form-label">Taluk</label>
+                    <input type="text" class="form-control" id="Taluk" name="Taluk" required>
+                </div>
+                <div class="col-md-2">
+                    <label for="district" class="form-label">District</label>
+                    <input type="text" class="form-control" id="district" name="district" required>
+                </div>
+                <div class="col-md-2">
+                    <label for="state" class="form-label">State</label>
+                    <input type="text" class="form-control" id="state" name="state" required>
+                </div>
+                <div class="col-md-2">
+                    <label for="pincode" class="form-label">Pincode</label>
+                    <input type="text" class="form-control" id="pincode" name="pincode" required>
+                </div>
+                <div class="col-md-2">
+                    <label for="gst" class="form-label">GST</label>
+                    <input type="text" class="form-control" id="gst" name="gst" required>
+                </div>
+            </div>
+
+            <div class="row g-3">
+                <div class="col-md-2">
+                    <label for="adhar" class="form-label">Aadhar number</label>
+                    <input type="number" class="form-control" id="adhar" name="adhar" required>
+                </div>
+                <div class="col-md-2">
+                    <label for="pan" class="form-label">PAN card</label>
+                    <input type="text" class="form-control" id="pan" name="pan" required>
+                </div>
+            </div>
+
+            <h1>Documents upload</h1>
+            <div class="row g-3">
+                <div class="col-md-2">
+                    <label for="adhar_document" class="form-label">Aadhar card</label>
+                    <input type="file" class="form-control" id="adhar_document" name="adhar_document" required>
+                </div>
+                <div class="col-md-2">
+                    <label for="pan_document" class="form-label">PAN number</label>
+                    <input type="file" class="form-control" id="pan_document" name="pan_document" required>
+                </div>
+                <div class="col-md-2">
+                    <label for="bank_document" class="form-label">Bank passbook</label>
+                    <input type="file" class="form-control" id="bank_document" name="bank_document" required>
+                </div>
+                <div class="col-md-2">
+                    <label for="gst_doc" class="form-label">GST certificate</label>
+                    <input type="file" class="form-control" id="gst_doc" name="gst_doc" required>
+                </div>
+            </div>
+
+            <div class="row g-3">
+                <div class="col-md-12">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <a href="{% url 'dealer_list' %}" class="btn btn-secondary">Cancel</a>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

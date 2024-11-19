@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer List</title>
+    <style>
+        /* Add some basic styling for the search input */
+        #search-box {
+            margin-bottom: 20px;
+            padding: 8px;
+            font-size: 16px;
+        }
+        /* Style for the edit button */
+        .edit-btn {
+            padding: 5px 10px;
+            margin-top: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+            font-size: 14px;
+        }
+        .edit-btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Customer List</h1>
+
+    <!-- Search box for filtering customer data (name, branch, mobile) -->
+    <input type="text" id="search-box" placeholder="Search by name, branch, or mobile..." onkeyup="filterTable()" />
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>S.No</th>
+                <th>Customer ID</th>
+                <th>Customer Name</th>
+                <th>Contact</th>
+                <th>Email</th>
+                <th>Branch Name</th>
+                <th>Employee Name</th>
+                <th>Address</th>
+                <th>Action</th> <!-- Column for Edit Button -->
+            </tr>
+        </thead>
+        <tbody id="customer-table">
+            {% for customer in customers %}
+            <tr>
+                <td>{{ forloop.counter }}</td> <!-- Display the serial number -->
+                <td>{{ customer.customer_id }}</td>
+                <td>{{ customer.name }}</td>
+                <td>{{ customer.mobile }}</td>
+                <td>{{ customer.email }}</td>
+                <td>{{ customer.branchname }}</td>
+                <td>{{ customer.employeename }}</td>
+                <td>
+                    <!-- Displaying address details concatenated -->
+                    Name : {{ customer.name }},<br>
+                    City : {{ customer.village }}, <br>
+                    State : {{ customer.state }}, <br>
+                    Taluk : {{ customer.Taluk }},<br>
+                    District: {{ customer.district }},<br>
+                    Pincode: {{ customer.pincode }}<br>
+                    Contact: {{ customer.mobile }}<br>
+                </td>
+                <td>
+                    <!-- Edit button -->
+                    <button class="edit-btn" onclick="editCustomer({{ customer.id }})">Edit</button>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="9">No customers found.</td> <!-- Adjusted colspan to 9 -->
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        // JavaScript function to filter table rows based on input search value
+        function filterTable() {
+            let input = document.getElementById("search-box");
+            let filter = input.value.toLowerCase();
+            let rows = document.querySelectorAll("#customer-table tr");
+
+            rows.forEach(row => {
+                let nameCell = row.querySelector("td:nth-child(3)"); // Name is in the 3rd column (index 2)
+                let branchCell = row.querySelector("td:nth-child(6)"); // Branch name is in the 6th column (index 5)
+                let mobileCell = row.querySelector("td:nth-child(4)"); // Mobile is in the 4th column (index 3)
+
+                // Check if these cells exist before performing the search
+                if (nameCell && branchCell && mobileCell) {
+                    let name = nameCell.textContent.toLowerCase();
+                    let branch = branchCell.textContent.toLowerCase();
+                    let mobile = mobileCell.textContent.toLowerCase();
+
+                    // If any of these fields match the search string, show the row
+                    if ((name.includes(filter) || branch.includes(filter) || mobile.includes(filter)) && filter.length >= 2) {
+                        row.style.display = ""; // Show the row if it matches the search
+                    } else {
+                        row.style.display = "none"; // Hide the row if it doesn't match
+                    }
+                }
+            });
+        }
+
+        // JavaScript function to handle the edit action
+        function editCustomer(customerId) {
+            // Redirect to the edit_customer page with the customer ID
+            window.location.href = "/edit_customer/" + customerId;  // Ensure your URL structure matches this
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,268 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Woody - Carpenter Website Template</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Favicon -->
+    <link href="{% static 'img/favicon.ico' %}" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500&family=Roboto:wght@500;700;900&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="{% static 'lib/animate/animate.min.css' %}" rel="stylesheet">
+    <link href="{% static 'lib/owlcarousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
+    <link href="{% static 'lib/lightbox/css/lightbox.min.css' %}" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+    <style>
+        body {
+    margin: 0;
+    padding: 0;
+    background: url('{% static "img/background1.jpg" %}') no-repeat center center fixed;
+    background-size: cover;
+    height: 100vh;
+}
+        .stats-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .stat-box {
+            background-color: #c0e0c7;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 30%;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-box:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .stat-box i {
+            font-size: 40px;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .stat-box h3 {
+            font-size: 24px;
+            color: #34495e;
+        }
+
+        .stat-box p {
+            font-size: 18px;
+            color: #7f8c8d;
+        }
+    </style>
+
+</head>
+
+<body>
+    {% include 'admin_nav.html' %}
+    <div class="container mt-5">
+    <div class="container mt-5">
+        <h1>Item List</h1>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Item Name</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Part No</th>
+                    <th>Description</th>
+                    <th>Branch Name</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="itemTableBody">
+                {% for item in items %}
+                    <tr data-itemid="{{ item.id }}" data-itemname="{{ item.Itemname }}" data-qty="{{ item.qty }}" data-part_no="{{ item.part_no }}" data-description="{{ item.description }}" data-branchname="{{ item.branchname }}">
+                        <td>{{ item.Itemname }}</td>
+                        <td>{{ item.qty }}</td>
+                        <td>{{ item.price }}</td>
+                        <td>{{ item.part_no }}</td>
+                        <td>{{ item.description }}</td>
+                        <td>{{ item.branchname }}</td>
+                        <td>
+                            <!-- Transfer Button -->
+                            <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#transferModal" data-itemname="{{ item.Itemname }}" data-qty="{{ item.qty }}" data-source="{{ item.branchname }}" data-itemid="{{ item.id }}">Transfer</button>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="7" class="text-center">No items found</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h2>Transferred Items</h2>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Item Name</th>
+                    <th>Source Branch</th>
+                    <th>Destination Branch</th>
+                    <th>Quantity</th>
+                </tr>
+            </thead>
+            <tbody id="transferItemList">
+                <!-- Transferred items will be appended here -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Transfer Modal -->
+    <div class="modal fade" id="transferModal" tabindex="-1" aria-labelledby="transferModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="transferModalLabel">Item Transfer</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="transferForm">
+                        <div class="mb-3">
+                            <label for="sourceBranch" class="form-label">Source Branch</label>
+                            <input type="text" class="form-control" id="sourceBranch" disabled>
+                        </div>
+                        <div class="mb-3">
+                            <label for="destinationBranch" class="form-label">Destination Branch</label>
+                            <select class="form-select" id="destinationBranch">
+                                <option value="">Select destination branch</option>
+                                {% for branch in branches %}
+                                    <option value="{{ branch.branchname }}">{{ branch.branchname }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="qtyTransfer" class="form-label">Quantity</label>
+                            <input type="number" class="form-control" id="qtyTransfer" placeholder="Enter quantity to transfer" min="1">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="confirmTransfer">Transfer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Event listener for Transfer button
+        const transferModal = document.getElementById('transferModal');
+        transferModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget; // Button that triggered the modal
+            const itemname = button.getAttribute('data-itemname');
+            const qty = button.getAttribute('data-qty');
+            const sourceBranch = button.getAttribute('data-source');
+            const itemId = button.getAttribute('data-itemid');
+
+            // Populate the modal fields with item data
+            const sourceBranchInput = transferModal.querySelector('#sourceBranch');
+            const destinationBranchInput = transferModal.querySelector('#destinationBranch');
+            const qtyTransferInput = transferModal.querySelector('#qtyTransfer');
+
+            sourceBranchInput.value = sourceBranch;
+            qtyTransferInput.value = qty; // Default to current quantity
+
+            // Store the itemId and itemname for later use in the transfer process
+            transferModal.dataset.itemId = itemId;
+            transferModal.dataset.itemName = itemname; // Store the itemname for transfer
+        });
+
+        // Handle Transfer confirmation
+        document.getElementById('confirmTransfer').addEventListener('click', function () {
+            const itemId = transferModal.dataset.itemId;
+            const itemName = transferModal.dataset.itemName; // Get the item name from modal data
+            const qtyTransfer = parseInt(document.getElementById('qtyTransfer').value);
+            const destinationBranch = document.getElementById('destinationBranch').value;
+            const sourceBranch = document.getElementById('sourceBranch').value;
+
+            if (qtyTransfer > 0 && destinationBranch !== '') {
+                // Send AJAX request to backend for transfer
+                fetch("{% url 'item_view' %}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}',  // Ensure CSRF token is sent
+                    },
+                    body: JSON.stringify({
+                        item_id: itemId,
+                        transfer_qty: qtyTransfer,
+                        destination_branch: destinationBranch
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        // Update the UI with transferred item details
+                        const transferItemList = document.getElementById('transferItemList');
+                        const newRow = document.createElement('tr');
+                        newRow.innerHTML = `
+                            <td>${itemName}</td>
+                            <td>${sourceBranch}</td>
+                            <td>${destinationBranch}</td>
+                            <td>${qtyTransfer}</td>
+                        `;
+                        transferItemList.appendChild(newRow);
+
+                        // Update the item list by decrementing the quantity
+                        const itemRow = document.querySelector(`tr[data-itemid="${itemId}"]`);
+                        const itemQtyCell = itemRow.querySelector('td:nth-child(2)');
+                        let currentQty = parseInt(itemQtyCell.textContent);
+                        currentQty -= qtyTransfer;
+                        itemQtyCell.textContent = currentQty;
+
+                        // If quantity becomes zero, remove the row from the table
+                        if (currentQty <= 0) {
+                            itemRow.remove();
+                        }
+
+                        // Close the modal
+                        const modal = bootstrap.Modal.getInstance(transferModal);
+                        modal.hide();
+
+                        alert(data.message);
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(error => {
+                    alert('An error occurred during the transfer.');
+                });
+            } else {
+                alert('Please provide valid transfer details.');
+            }
+        });
+    </script>
+</body>
+</html>
